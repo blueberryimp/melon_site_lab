@@ -102,17 +102,14 @@ def add_to_cart(melon_id):
     # - redirect the user to the cart page
 
 # if not session[cart=yes], then add cart dictionary to session
-    if not session["cart"]:
-        count = 0
-        session["cart"] = {melon_id: (count + 1)}
-        # add one(count of item purchasing) to index 1 of list @ session['cart'][1]
-    else:
-        
-# if present, add item to cart, increment...
+    if 'cart' not in session:
+        session["cart"] = {}
+    if melon_id not in session['cart']:
+        session['cart'][melon_id] = 0
+    session['cart'][melon_id] += 1
+    flash('Melon was succesfully added!')
 
-
-    return "Oops! This needs to be implemented!"
-
+    return redirect("/cart")
 
 @app.route("/login", methods=["GET"])
 def show_login():
