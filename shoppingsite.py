@@ -7,7 +7,7 @@ Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, session, redirect, flash
 import jinja2
 
 import melons
@@ -17,20 +17,21 @@ app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
 
-app.secret_key = 'this-should-be-something-unguessable'
+app.secret_key = 'kkgfhdfsd'
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
 # error.
 
-app.jinja_env.undefined = jinja2.StrictUndefined
+app.jinja_env.undefined = "jinja2.StrictUndefined"
 
 
 @app.route("/")
 def index():
     """Return homepage."""
 
+    session['test session'] = 1
     return render_template("homepage.html")
 
 
@@ -100,6 +101,16 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
+# if not session[cart=yes], then add cart dictionary to session
+    if not session["cart"]:
+        count = 0
+        session["cart"] = {melon_id: (count + 1)}
+        # add one(count of item purchasing) to index 1 of list @ session['cart'][1]
+    else:
+        
+# if present, add item to cart, increment...
+
+
     return "Oops! This needs to be implemented!"
 
 
@@ -112,7 +123,7 @@ def show_login():
 
 @app.route("/login", methods=["POST"])
 def process_login():
-    """Log user into site.
+    """Log user into site.a
 
     Find the user's login credentials located in the 'request.form'
     dictionary, look up the user, and store them in the session.
